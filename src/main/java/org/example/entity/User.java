@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@RequiredArgsConstructor
 @Data
 @Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
     @Column(nullable = false, unique = true)
