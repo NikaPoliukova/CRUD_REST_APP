@@ -22,7 +22,7 @@ public class AuthController {
         if (userService.getUserByUsername(userDto.username()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
-        userService.createUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+       var user = userService.createUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user.toString());
     }
 }

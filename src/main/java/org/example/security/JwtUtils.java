@@ -99,5 +99,4 @@ public class JwtUtils {
                 ? refreshHeader.substring(TOKEN_PREFIX.length())
                 : null;
     }
-
 }
