@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping("api/v1/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
     @Autowired
     UserService userService;
