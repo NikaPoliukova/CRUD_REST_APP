@@ -30,7 +30,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/api/v1/registration/**", "/api/v1/login/**").permitAll()
+                        .requestMatchers("/api/v1/registration/**", "/api/v1/login/**",
+                                "/actuator/*").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login()
                 .and()
