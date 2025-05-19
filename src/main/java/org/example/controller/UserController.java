@@ -21,7 +21,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
-    @GetMapping("/user/{id}")
+    @GetMapping("/user")
     public ResponseEntity<User> getUserByUsername(@RequestParam("username") @NotBlank @Size(min = 2, max = 60) String username) {
         return userService.getUserByUsername(username)
                 .map(ResponseEntity::ok)

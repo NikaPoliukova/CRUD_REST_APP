@@ -23,6 +23,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
        var user = userService.createUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user.toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body(user.getUsername() + " successfully registry");
     }
 }

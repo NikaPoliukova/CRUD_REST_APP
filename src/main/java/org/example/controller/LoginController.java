@@ -24,7 +24,7 @@ public class LoginController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())

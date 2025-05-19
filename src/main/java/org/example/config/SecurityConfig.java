@@ -29,12 +29,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                          .authorizeHttpRequests(registry -> registry
+                .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/v1/registration/**", "/api/v1/login/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login()
                 .and()
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Если JWT нужен для других частей приложения
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
