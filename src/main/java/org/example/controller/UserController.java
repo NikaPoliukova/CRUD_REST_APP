@@ -22,7 +22,8 @@ public class UserController {
     @Autowired
     UserService userService;
     @GetMapping("/user")
-    public ResponseEntity<User> getUserByUsername(@RequestParam("username") @NotBlank @Size(min = 2, max = 60) String username) {
+    public ResponseEntity<User> getUserByUsername(@RequestParam("username") @NotBlank @Size(min = 2, max = 60)
+                                                      String username) {
         return userService.getUserByUsername(username)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -40,8 +41,9 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserByUsername(@RequestParam("username") @NotBlank @Size(min = 2, max = 60) String username) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUserByUsername(@RequestParam("username")
+                                                         @NotBlank @Size(min = 2, max = 60) String username) {
         userService.deleteUserByUsername(username);
         return ResponseEntity.noContent().build();
     }

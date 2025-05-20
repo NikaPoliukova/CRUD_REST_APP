@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -38,7 +39,7 @@ public class JwtUtils {
         Claims claims;
         try {
             claims = Jwts.parserBuilder()
-                    .setSigningKey(secret.getBytes()) // Получаем секретный ключ
+                    .setSigningKey(secret.getBytes())
                     .build()
                     .parseClaimsJws(expiredToken)
                     .getBody();
@@ -47,12 +48,10 @@ public class JwtUtils {
         }
 
         Date expirationDate = generateExpirationDate(50);
-
-        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());  // Генерируем ключ
         return Jwts.builder()
-                .setClaims(claims)  // Используем прежние данные токена
-                .setExpiration(expirationDate)  // Устанавливаем новое время истечения
-                .signWith(key, SignatureAlgorithm.HS512)  // Подписываем новый токен
+                .setClaims(claims)
+                .setExpiration(expirationDate)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -63,25 +62,28 @@ public class JwtUtils {
     }
 
     public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(secret.getBytes())
-                .parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(secret)
+                    .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
-            // Логирование или обработка ошибки
             return false;
         }
     }
 
     public boolean isTokenExpired(String token) {
-        Date expiration = Jwts.parser().setSigningKey(secret.getBytes())
+        Date expiration = Jwts.parser().setSigningKey(getSigningKey())
                 .parseClaimsJws(token).getBody().getExpiration();
         return expiration.before(new Date());
     }
@@ -98,5 +100,9 @@ public class JwtUtils {
         return (refreshHeader != null && refreshHeader.startsWith(TOKEN_PREFIX))
                 ? refreshHeader.substring(TOKEN_PREFIX.length())
                 : null;
+    }
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 }

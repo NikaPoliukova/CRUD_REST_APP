@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-
     public User createUser(UserDto dto) {
         User user = new User();
         user.setUsername(dto.username());
@@ -41,13 +40,20 @@ public class UserServiceImpl implements UserService {
     }
 
     public Optional<User> updateUser(UserDto dto) {
-        return userRepository.findByUsername(dto.username()).map(user -> {
-            user.setUsername(dto.username());
-            user.setEmail(dto.email());
-            user.setPassword(dto.password());
-            return userRepository.save(user);
-        });
+        if (dto.username() == null) {
+            return Optional.empty();
+        }
+        return userRepository.findByUsername(dto.username())
+                .map(user -> {
+                    if (dto.email() != null)
+                        user.setEmail(dto.email());
+                    if (dto.password() != null) {
+                        user.setPassword(dto.password());
+                    }
+                    return userRepository.save(user);
+                });
     }
+
 
     public void deleteUserByUsername(String username) {
         userRepository.findByUsername(username)
