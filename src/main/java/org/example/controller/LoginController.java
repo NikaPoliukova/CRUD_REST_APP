@@ -3,7 +3,6 @@ package org.example.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.AuthRequest;
 import org.example.dto.AuthResponse;
-import org.example.entity.User;
 import org.example.security.JwtUtils;
 import org.example.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +26,10 @@ public class LoginController {
     @PostMapping
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password())
+                new UsernamePasswordAuthenticationToken(request.userName(), request.password())
         );
-
-        var user = userService.getUserByUsername(request.username())
+        var user = userService.getUserByUsername(request.userName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
         return ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(user)));
     }
 }

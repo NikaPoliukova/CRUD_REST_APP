@@ -3,6 +3,7 @@ package org.example.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.UserDto;
+import org.example.entity.Role;
 import org.example.entity.User;
 import org.example.repository.UserRepository;
 import org.example.service.UserService;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(dto.username());
         user.setEmail(dto.email());
         user.setPassword(passwordEncoder.encode(dto.password()));
+        user.setRole(Role.USER);
         return userRepository.save(user);
     }
 

@@ -17,12 +17,14 @@ public class AuthController {
 
     private final UserService userService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<String> register(@RequestBody UserDto userDto) {
-        if (userService.getUserByUsername(userDto.username()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
-        }
-       var user = userService.createUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user.getUsername() + " successfully registry");
+        return userService.getUserByUsername(userDto.username())
+                .map(user -> ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists"))
+                .orElseGet(() -> {
+                    var createdUser = userService.createUser(userDto);
+                    return ResponseEntity.status(HttpStatus.CREATED)
+                            .body(createdUser.getUsername() + " successfully registry");
+                });
     }
 }
