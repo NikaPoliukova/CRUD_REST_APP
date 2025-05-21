@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     public User createUser(UserDto dto) {
         User user = new User();
-        user.setUsername(dto.username());
+        user.setUserName(dto.userName());
         user.setEmail(dto.email());
         user.setPassword(passwordEncoder.encode(dto.password()));
         user.setRole(Role.USER);
@@ -38,10 +38,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public Optional<User> updateUser(UserDto dto) {
-        if (dto.username() == null) {
+        if (dto.userName() == null) {
             return Optional.empty();
         }
-        return userRepository.findByUsername(dto.username())
+        return userRepository.findByUsername(dto.userName())
                 .map(user -> {
                     if (dto.email() != null)
                         user.setEmail(dto.email());

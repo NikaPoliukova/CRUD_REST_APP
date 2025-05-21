@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userService.getUserByUsername(username)
-                .map(user -> User.withUsername(user.getUsername())
+                .map(user -> User.withUsername(user.getUserName())
                         .password(user.getPassword())
                         .authorities(Collections.singletonList(
                                 new SimpleGrantedAuthority("ROLE_" + user.getRole().name())

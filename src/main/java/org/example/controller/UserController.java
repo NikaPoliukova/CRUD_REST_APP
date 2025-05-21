@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.UserDto;
 import org.example.entity.User;
 import org.example.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

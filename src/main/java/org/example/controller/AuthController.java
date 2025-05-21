@@ -19,12 +19,12 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity<String> register(@RequestBody UserDto userDto) {
-        return userService.getUserByUsername(userDto.username())
+        return userService.getUserByUsername(userDto.userName())
                 .map(user -> ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists"))
                 .orElseGet(() -> {
                     var createdUser = userService.createUser(userDto);
                     return ResponseEntity.status(HttpStatus.CREATED)
-                            .body(createdUser.getUsername() + " successfully registry");
+                            .body(createdUser.getUserName() + " successfully registry");
                 });
     }
 }

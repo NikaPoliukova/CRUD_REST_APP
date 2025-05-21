@@ -36,7 +36,7 @@ class UserServiceImplTest {
     void createUser_ShouldEncodePasswordAndSaveUser() {
         UserDto dto = new UserDto("john", "plainpass", "john@example.com");
         User savedUser = new User();
-        savedUser.setUsername("john");
+        savedUser.setUserName("john");
         savedUser.setEmail("john@example.com");
         savedUser.setPassword("encodedpass");
 
@@ -45,7 +45,7 @@ class UserServiceImplTest {
 
         User result = userService.createUser(dto);
 
-        assertEquals("john", result.getUsername());
+        assertEquals("john", result.getUserName());
         assertEquals("encodedpass", result.getPassword());
         verify(userRepository).save(any(User.class));
     }
@@ -53,14 +53,14 @@ class UserServiceImplTest {
     @Test
     void getUserByUsername_ShouldReturnUserIfExists() {
         User user = new User();
-        user.setUsername("jane");
+        user.setUserName("jane");
 
         when(userRepository.findByUsername("jane")).thenReturn(Optional.of(user));
 
         Optional<User> result = userService.getUserByUsername("jane");
 
         assertTrue(result.isPresent());
-        assertEquals("jane", result.get().getUsername());
+        assertEquals("jane", result.get().getUserName());
     }
 
     @Test
@@ -77,7 +77,7 @@ class UserServiceImplTest {
     void updateUser_ShouldUpdateOnlyNonNullFields() {
         UserDto dto = new UserDto("john", null, "new@mail.com");
         User user = new User();
-        user.setUsername("john");
+        user.setUserName("john");
         user.setEmail("old@mail.com");
         user.setPassword("oldpass");
 
@@ -102,7 +102,7 @@ class UserServiceImplTest {
     void deleteUserByUsername_ShouldDeleteIfUserFound() {
         User user = new User();
         user.setUserId(10L);
-        user.setUsername("john");
+        user.setUserName("john");
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
 
